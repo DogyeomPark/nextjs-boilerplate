@@ -1,0 +1,13 @@
+{
+  "searchLabel": "필터",
+  "searchTitleTime": "언제 가고 싶으세요?",
+  "searchSubtitleTime": "모두가 괜찮은지 확인하세요!",
+  "searchTitleGuest": "세부 정보",
+  "searchSubtitleGuest": "완벽한 장소를 찾아보세요!",
+  "searchInfoTitleGuest": "게스트",
+  "searchInfoSubtitleGuest": "몇 명인가요?",
+  "searchInfoTitleRoom": "방",
+  "searchInfoSubtitleRoom": "몇 개의 방이 필요한가요?",
+  "searchInfoTitleBathrooms": "화장실",
+  "searchInfoSubtitleBathrooms": "몇 개의 화장실이 필요한가요?"
+}

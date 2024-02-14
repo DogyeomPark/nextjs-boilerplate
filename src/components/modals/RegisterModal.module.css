@@ -1,0 +1,6 @@
+.footerContainer {
+  color: var(--neutral-500);
+  text-align: center;
+  font-weight: 300;
+  margin-top: 1rem;
+}

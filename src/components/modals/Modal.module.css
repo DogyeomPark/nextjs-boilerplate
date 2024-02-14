@@ -1,0 +1,134 @@
+.overlay {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  inset: 0px;
+  z-index: 50;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  background-color: rgb(38 38 38 / 0.7);
+}
+
+.overlay:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  margin-top: 1.5rem /* 24px */;
+  margin-bottom: 1.5rem /* 24px */;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100%;
+
+  @media (min-width: 768px) {
+    width: 66.666667%;
+  }
+
+  @media (min-width: 1024px) {
+    width: 50%;
+  }
+
+  @media (min-width: 1280px) {
+    width: 40%;
+  }
+
+  @media (min-width: 768px) {
+    height: auto;
+  }
+}
+
+.modalContainer {
+  height: 100%;
+  transition-duration: 300ms;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
+.showModal {
+  opacity: 1;
+  transform: translateY(0px);
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  border-radius: 0.5rem;
+  border-width: 0px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  background-color: var(--white);
+  box-shadow: var(--shadow-lg);
+
+  @media (min-width: 768px) {
+    height: auto;
+  }
+}
+
+.modalHeader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem /* 24px */;
+  border-top-left-radius: 0.25rem /* 4px */;
+  border-top-right-radius: 0.25rem /* 4px */;
+  border-bottom-width: 1px;
+}
+
+.modalTitle {
+  font-size: 1.125rem /* 18px */;
+  line-height: 1.75rem /* 28px */;
+  font-weight: 600;
+}
+
+.modalCloseButton {
+  position: absolute;
+  font-weight: 600;
+  border-width: 0px;
+  padding: 0.25rem;
+  right: 2.25rem;
+  cursor: pointer;
+
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-property: box-shadow;
+}
+
+.modalCloseButton:hover {
+  opacity: 0.7;
+}
+
+.modalBody {
+  display: flex;
+  gap: 1rem /* 16px */;
+  position: relative;
+  padding: 1.5rem /* 24px */;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.modalFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem /* 16px */;
+  padding: 1.5rem /* 24px */;
+
+  margin-top: 0.75rem /* 12px */;
+}
+
+.footerInner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem /* 16px */;
+  width: 100%;
+}

@@ -1,0 +1,53 @@
+.button {
+  position: relative;
+  border-radius: 0.5rem;
+  width: 100%;
+
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-weight: 600;
+  border-width: 2px;
+  border-style: solid;
+
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+  transition-property: background-color;
+
+  background-color: var(--rose);
+  border-color: var(--rose);
+  color: var(--white);
+}
+
+.button:not(:disabled):hover {
+  opacity: 0.8;
+}
+
+.button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.outline {
+  background-color: var(--white);
+  border-color: var(--black);
+  color: var(--black);
+}
+
+.outline:not(:disabled):hover {
+  background-color: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+.small {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  font-weight: 400;
+  border-width: 1px;
+}
+
+.icon {
+  position: absolute;
+  left: 1rem;
+  top: 0.75rem;
+}

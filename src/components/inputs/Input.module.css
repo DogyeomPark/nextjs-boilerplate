@@ -1,0 +1,87 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.dollarIcon {
+  position: absolute;
+  color: var(--neutral-700);
+  top: 1.25rem;
+  left: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 1rem;
+  padding-top: 1.5rem;
+  font-weight: 300;
+  background-color: var(--white);
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 0.375rem;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+
+  transition-property: border-color;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+
+  padding-left: 1rem;
+  border-color: var(--neutral-300);
+}
+
+.input:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.input:focus {
+  border: var(--black);
+}
+
+.inputPrice {
+  padding-left: 2.25rem;
+}
+
+.inputError {
+  border-color: var(--rose);
+}
+
+.inputError:focus {
+  border-color: var(--rose);
+}
+
+.label {
+  position: absolute;
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  transition-duration: 150ms;
+
+  transform: translateY(-0.75rem);
+  transform-origin: 0;
+
+  top: 1.25rem;
+  z-index: 10;
+
+  left: 1rem;
+  color: var(--zinc);
+
+  &.peer-placeholder-shown {
+    transform: scale(1);
+    transform: translateY(0);
+  }
+
+  &.peer-focus {
+    transform: scale(0.75);
+    transform: translateY(-1rem);
+  }
+}
+
+.labelPrice {
+  left: 2.25rem;
+}
+
+.labelError {
+  color: var(--rose);
+}

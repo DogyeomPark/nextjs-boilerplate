@@ -1,0 +1,16 @@
+.body {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  gap: 0.75rem /* 12px */;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.body > div {
+  grid-column: span 1 / span 1;
+}
