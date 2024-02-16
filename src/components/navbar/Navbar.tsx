@@ -1,24 +1,15 @@
-import styles from './Navbar.module.css';
+import Logo from './logo';
 
-import Container from '../Container';
-import Logo from './Logo';
-import Search from './Search';
-import UserMenu from './UserMenu';
-import Categories from './Categories';
+import styles from './navbar.module.css';
 
 const Navbar: React.FC = () => {
   return (
     <div className={styles.navBar}>
       <div className={styles.borderBelow}>
-        <Container>
-          <div className={styles.container}>
-            <Logo />
-            <Search />
-            <UserMenu />
-          </div>
-        </Container>
+        <div className={styles.container}>
+          <Logo />
+        </div>
       </div>
-      <Categories />
     </div>
   );
 };

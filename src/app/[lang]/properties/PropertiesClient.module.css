@@ -1,5 +1,0 @@
-.cardContainer {
-  margint-top: 2.5rem;
-  gap: 2rem;
-  composes: gridContainer from '../gridContainer.module.css';
-}
