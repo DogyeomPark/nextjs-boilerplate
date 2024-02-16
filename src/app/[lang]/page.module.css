@@ -1,6 +1,0 @@
-.container {
-  padding-top: 24px;
-  gap: 8px;
-
-  composes: gridContainer from './gridContainer.module.css';
-}

@@ -1,7 +1,5 @@
 'use client';
 
-import { IconType } from 'react-icons/lib';
-
 import styles from './Button.module.css';
 
 interface ButtonProps {
@@ -10,7 +8,6 @@ interface ButtonProps {
   disabled?: boolean;
   outline?: boolean;
   small?: boolean;
-  icon?: IconType;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,7 +16,6 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   outline,
   small,
-  icon: Icon,
 }) => {
   return (
     <button
@@ -31,7 +27,6 @@ const Button: React.FC<ButtonProps> = ({
         small && styles.small,
       ].join(' ')}
     >
-      {Icon && <Icon size={24} className={styles.icon} />}
       {label}
     </button>
   );

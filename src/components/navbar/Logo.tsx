@@ -1,20 +1,9 @@
-import styles from './Logo.module.css';
-
-import Image from 'next/image';
 import Link from 'next/link';
 
+import styles from './logo.module.css';
+
 const Logo: React.FC = () => {
-  return (
-    <Link href='/'>
-      <Image
-        alt='Logo'
-        className={styles.image}
-        height='40'
-        width='120'
-        src='/images/logo.png'
-      />
-    </Link>
-  );
+  return <Link href='/'>Sample Logo</Link>;
 };
 
 export default Logo;

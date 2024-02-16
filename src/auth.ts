@@ -1,8 +1,6 @@
 import NextAuth from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type { NextAuthConfig, Session, User } from 'next-auth';
-import KeycloakProvider from 'next-auth/providers/keycloak';
-
 
 // const adapter = PrismaAdapter(client);
 
@@ -10,13 +8,7 @@ export const config = {
   theme: {
     logo: 'https://next-auth.js.org/img/logo/logo-sm.png',
   },
-  providers: [
-    KeycloakProvider({
-      clientId: process.env.KEYCLOAK_ID,
-      clientSecret: process.env.KEYCLOAK_SECRET,
-      issuer: process.env.KEYCLOAK_ISSUER,
-    }),
-  ],
+  providers: [],
   callbacks: {
     redirect({ url, baseUrl }) {
       const redirectUrl = url.startsWith('/')
@@ -87,12 +79,12 @@ export const config = {
             name: session.user.name,
           };
           if (Date.now() < updateToken.accessTokenExpiredAt) return updateToken;
-          return await refreshAccessToken(updateToken);
+          return updateToken; // TODO: 필요할 경우 accessToken을 refresh하는 로직 추가
 
         // * In case of the latter, `trigger` will be `undefined`.
         default:
           if (Date.now() < token.accessTokenExpiredAt) return token;
-          return await refreshAccessToken(token);
+          return token; // TODO: 필요할 경우 accessToken을 refresh하는 로직 추가
       }
     },
 
@@ -137,54 +129,3 @@ export const { handlers, auth, signIn, signOut, unstable_update } = NextAuth({
   debug: process.env.NODE_ENV !== 'production', // production 단계가 아니라면 next-auth 의 debug log 를 활성화시킵니다.
   ...config,
 });
-
-/**
- * Takes a token, and returns a new token with updated
- * `accessToken` and `accessTokenExpires`. If an error occurs,
- * returns the old token and an error property
- */
-/**
- * @param  {JWT} token
- */
-const refreshAccessToken = async (token: JWT) => {
-  try {
-    if (Date.now() > token.refreshTokenExpiredAt) throw Error;
-    const details = {
-      client_id: process.env.KEYCLOAK_ID,
-      client_secret: process.env.KEYCLOAK_SECRET,
-      grant_type: ['refresh_token'],
-      refresh_token: token.refreshToken,
-    };
-
-    const formBody: string[] = [];
-    Object.entries(details).forEach(([key, value]: [string, any]) => {
-      const encodedKey = encodeURIComponent(key);
-      const encodedValue = encodeURIComponent(value);
-      formBody.push(encodedKey + '=' + encodedValue);
-    });
-    const formData = formBody.join('&');
-    const url = process.env.KEYCLOAK_BASE_URL ?? '';
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
-      body: formData,
-    });
-    const refreshedTokens = await response.json();
-    if (!response.ok) throw refreshedTokens;
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpired: Date.now() + (refreshedTokens.expires_in - 15) * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
-      refreshTokenExpired:
-        Date.now() + (refreshedTokens.refresh_expires_in - 15) * 1000,
-    };
-  } catch (error) {
-    return {
-      ...token,
-      error: 'RefreshAccessTokenError',
-    };
-  }
-};

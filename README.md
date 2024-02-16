@@ -30,6 +30,42 @@ KEYCLOAK_CLIENT_ID=Keycloak 콘솔에서 Clients -> Settings -> ClientID
 KEYCLOAK_SECRET=Keycloak 콘솔에서 Clients -> Credentials -> Client Secret
 ```
 
+관련하여 자세한 샘플 코드는 `feature/keycloak` 을 참고바랍니다.
+
+## react-i18n 설정
+
+### 번역 파일 생성
+
+언어별 번역 정보를 담은 json 파일 생성합니다. (파일명은 예시입니다.)
+
+```
+.
+└── project/
+    └── locales/
+        ├── en/
+        │   ├── common.json
+        │   ├── landing.json
+        │   └── ...
+        └── ko/
+            ├── common.json
+            ├── landing.json
+            └── ...
+```
+
+### config 설정
+
+```js
+// i18n.config.js
+const i18nConfig = {
+  locales: ['en', 'ko', ... ],
+  defaultLocale: 'en',
+};
+
+module.exports = i18nConfig;
+```
+
+관련하여 자세한 샘플 코드는 `feature/react-i18n` 을 참고바랍니다.
+
 ## Dockerize
 
 빌드
