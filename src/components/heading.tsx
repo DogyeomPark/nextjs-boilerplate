@@ -1,4 +1,4 @@
-import styles from './Heading.module.css';
+import styles from './heading.module.css';
 
 interface HeadingProps {
   title: string;
