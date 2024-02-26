@@ -3,12 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "local:start": "NEXT_PUBLIC_ENV=local next dev",
-    "local:build": "NEXT_PUBLIC_ENV=local next build",
-    "dev:start": "NEXT_PUBLIC_ENV=development next dev",
-    "dev:build": "NEXT_PUBLIC_ENV=development next build && next-sitemap",
-    "prod:start": "NEXT_PUBLIC_ENV=production next start",
-    "prod:build": "NEXT_PUBLIC_ENV=production next build && next-sitemap",
+    "dev": "next dev",
+    "build": "next build && next-sitemap",
+    "start": "next start",
     "format": "npx prettier --write \"app/**/*.ts\"",
     "generate-api": "dotenv -e .env.local -- bash -c  'swagger-typescript-api --extract-request-params -p $SWAGGER_URL --module-name-index 0 -o src/generated/api -n api-service'"
   },
