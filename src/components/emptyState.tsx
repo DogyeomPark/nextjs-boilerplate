@@ -2,7 +2,7 @@ import Heading from './heading';
 import Button from './button';
 import Link from 'next/link';
 
-import styles from './EmptyState.module.css';
+import styles from './emptyState.module.css';
 
 interface EmptyStateProps {
   title?: string;

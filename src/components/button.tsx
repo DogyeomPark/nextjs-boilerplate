@@ -1,6 +1,6 @@
 'use client';
 
-import styles from './Button.module.css';
+import styles from './button.module.css';
 
 interface ButtonProps {
   label: string;
