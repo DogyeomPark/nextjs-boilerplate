@@ -10,7 +10,7 @@ const ClientComponent: React.FC = () => {
   return (
     <div>
       <Button
-        label="increase"
+        label='increase'
         onClick={() => setCount((prev) => (prev += 1))}
       />
       <div>{count}</div>

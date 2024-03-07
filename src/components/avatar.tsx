@@ -12,9 +12,9 @@ const Avatar: React.FC<AvatarProps> = ({ src }) => {
       style={{
         borderRadius: '9999px',
       }}
-      height="30"
-      width="30"
-      alt="Avatar"
+      height='30'
+      width='30'
+      alt='Avatar'
       src={src ?? '/images/placeholder.jpg'}
     />
   );
