@@ -20,8 +20,8 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       <Heading center title={title} subtitle={subtitle} />
       <div className={styles.cardContainer}>
         {showReset && (
-          <Link href='/'>
-            <Button outline label='return' />
+          <Link href="/">
+            <Button outline label="return" />
           </Link>
         )}
       </div>
