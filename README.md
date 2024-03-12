@@ -1,11 +1,17 @@
-sample project
+## Sample Components
+
+boilerplate 내부의 component 및 page 등은 이해를 돕기 위한 코드입니다.
+
+필요가 없거나 수정이 필요한 경우, 삭제 및 수정하셔도 무방합니다.
 
 ## Swagger Export Typescript
+
+### `api-service.ts` 생성
 
 로컬 서버를 띄운 후, 대상이 될 URL을 획득합니다\
 (swaggerURL 경로에 -yaml 추가가 필요합니다)
 
-env.local에 swagger url 입력합니다
+`.env.***`에 swagger url 입력합니다
 
 ```
 SWAGGER_URL=${swagger_url}
@@ -16,6 +22,22 @@ Swagger에 맞게 typescript를 export 합니다
 ```
 pnpm run generate-api
 ```
+
+`src/generated/api` 폴더 내부에 api 관련 로직이 포함된 `api-service.ts` 파일이 생성됩니다.
+
+### `apiService.ts` 생성
+
+위 과정 이후 `src/lib` 폴더 안에 아래의 코드를 포함한 `apiService.ts` 파일을 생성합니다.
+
+```ts
+import { Api } from '@/generated/api/api-service';
+
+export const apiService = new Api({
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
+});
+```
+
+모든 api 호출 `apiService.ts` 를 import 한 후 사용하시면 되겠습니다.
 
 ## Keycloak 설정
 
