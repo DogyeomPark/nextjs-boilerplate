@@ -1,7 +1,6 @@
 import { Nunito } from 'next/font/google';
 
 import { SessionProvider } from 'next-auth/react';
-import ToasterProvider from '@/providers/ToasterProvider';
 
 import Navbar from '@/components/navbar/navbar';
 
@@ -24,7 +23,6 @@ export default async function RootLayout({
     <html lang='en'>
       <body className={font.className}>
         <SessionProvider>
-          <ToasterProvider />
           <Navbar />
           <div className={styles.container}>{children}</div>
         </SessionProvider>
