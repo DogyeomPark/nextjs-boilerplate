@@ -2,10 +2,12 @@ import { Nunito } from 'next/font/google';
 
 import { SessionProvider } from 'next-auth/react';
 
-import Navbar from '@/components/navbar/navbar';
+import WalletProvider from '@/providers/walletProvider';
 
 import './globals.css';
 import styles from './layout.module.css';
+import Web3Provider from '@/providers/wagmiProvider';
+import ReactQueryProvider from '@/providers/reactQueryProvider';
 
 const font = Nunito({ subsets: ['latin'] });
 
@@ -23,8 +25,13 @@ export default async function RootLayout({
     <html lang='en'>
       <body className={font.className}>
         <SessionProvider>
-          <Navbar />
-          <div className={styles.container}>{children}</div>
+          <Web3Provider>
+            <ReactQueryProvider>
+              <WalletProvider>
+                <div className={styles.container}>{children}</div>
+              </WalletProvider>
+            </ReactQueryProvider>
+          </Web3Provider>
         </SessionProvider>
       </body>
     </html>

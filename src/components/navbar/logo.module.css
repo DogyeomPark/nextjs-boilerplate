@@ -1,8 +1,0 @@
-.image {
-  display: none;
-  cursor: pointer;
-
-  @media (min-width: 48em) {
-    display: block;
-  }
-}

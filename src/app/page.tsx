@@ -1,7 +1,8 @@
-import EmptyState from '@/components/emptyState';
+import WalletConnectButton from '@/components/walletConnectButton';
+import styles from './page.module.css';
 
 const Home: React.FC = () => {
-  return <EmptyState showReset />;
+  return <WalletConnectButton />;
 };
 
 export default Home;
