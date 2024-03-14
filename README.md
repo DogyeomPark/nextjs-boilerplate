@@ -49,9 +49,10 @@ boilerplate 용 렐름은 dev-keycloak-authentication <br />
 KEYCLOAK_BASE_URL=https://accounts.hqloud.blocksmith.xyz/realms/{생성 렐름 이름}/protocol/openid-connect/token
 KEYCLOAK_ISSUER=https://accounts.hqloud.blocksmith.xyz/realms/{생성 렐름 이름}
 KEYCLOAK_CLIENT_ID=Keycloak 콘솔에서 Clients -> Settings -> ClientID
+KEYCLOAK_SECRET=Keycloak 콘솔에서 Clients -> Credentials -> Client Secret
 ```
 
-관련하여 자세한 샘플 코드는 `addon/keycloak` 을 참고바랍니다.
+관련하여 자세한 샘플 코드는 `feature/keycloak` 을 참고바랍니다.
 
 ## react-i18n 설정
 
@@ -271,7 +272,7 @@ sequenceDiagram
     },
     signOut: async () => {
       setLoginStatus('unauthenticated');
-      await apiService.wallet.walletControllerSignout();
+      await apiService.user.walletControllerSignout();
     },
   });
   ```

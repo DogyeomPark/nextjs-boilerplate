@@ -5,7 +5,7 @@ import { apiService } from '@/lib/apiService';
 import { AUTH_TOKEN_KEY } from '@/config';
 
 export async function POST(request: NextRequest) {
-  await apiService.wallet.userControllerSignOut();
+  await apiService.user.userControllerSignOut();
   cookies().delete(AUTH_TOKEN_KEY);
   return NextResponse.json({}, { status: 200 });
 }
