@@ -73,13 +73,14 @@ export const config = {
           };
         // * - update event:
         // Triggered by the[`useSession().update`](https:;//next-auth.js.org/getting-started/client#update-session) method.
-        case 'update':
+        case 'update': {
           const updateToken = {
             ...token,
             name: session.user.name,
           };
           if (Date.now() < updateToken.accessTokenExpiredAt) return updateToken;
           return updateToken; // TODO: 필요할 경우 accessToken을 refresh하는 로직 추가
+        }
 
         // * In case of the latter, `trigger` will be `undefined`.
         default:
@@ -106,7 +107,7 @@ export const config = {
       token?: JWT;
     }) {
       if (token) {
-        session.user.id = token.sub as string;
+        session.user.id = token.sub;
         session.user.name = token.name;
         session.user.accessToken = token.accessToken;
       }
