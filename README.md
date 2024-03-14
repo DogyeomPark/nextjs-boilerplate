@@ -33,7 +33,7 @@ pnpm run generate-api
 import { Api } from '@/generated/api/api-service';
 
 export const apiService = new Api({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL,
+  baseUrl: process.env.BASE_API_URL,
 });
 ```
 
