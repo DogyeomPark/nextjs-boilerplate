@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
   const { message, signature } = body;
 
-  const resp = await apiService.wallet.walletControllerSignIn(
+  const resp = await apiService.user.userControllerSignIn(
     {
       message,
       signature,
@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
   const { accessToken } = resp.data;
 
   // TODO: {expires} 혹은 {maxAge}를 통한 만료기간에 관한 설정이 필요합니다.
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   cookies().set(AUTH_TOKEN_KEY, accessToken, {
     secure: process.env.NODE_ENV === 'production',
     path: '/',

@@ -272,7 +272,7 @@ sequenceDiagram
     },
     signOut: async () => {
       setLoginStatus('unauthenticated');
-      await apiService.wallet.walletControllerSignout();
+      await apiService.user.walletControllerSignout();
     },
   });
   ```
