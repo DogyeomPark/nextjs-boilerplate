@@ -1,4 +1,4 @@
-import { User, Listing, Reservation } from '@prisma/client';
+import { User } from 'next-auth';
 
 // jwt 와 Session 타입을 오버라이드하여 타입 검증을 할 수 있게 됩니다.
 type UserId = string;
@@ -13,12 +13,14 @@ declare module 'next-auth/jwt' {
     refreshToken: string;
     accessTokenExpiredAt: number;
     refreshTokenExpiredAt: number;
+    provider: string;
+    idToken: string;
   }
 }
 
 declare module 'next-auth' {
   interface Session {
-    user: SafeUser & {
+    user: User & {
       sub: UserId;
       iat: number;
       exp: number;
