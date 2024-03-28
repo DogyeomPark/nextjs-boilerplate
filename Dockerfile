@@ -1,23 +1,31 @@
-FROM node:20.11.0-alpine AS base
+FROM public.ecr.aws/docker/library/node:18-alpine AS base
 
-FROM base AS deps
 WORKDIR /app
+RUN npm install -g pnpm
+
+# Install dependencies only when needed
+FROM base AS deps
+RUN apk add --no-cache python3 make g++ && ln -sf python3 /usr/bin/python
 COPY package.json pnpm-lock.yaml ./
-RUN npm i -g pnpm && pnpm install
+RUN pnpm install --frozen-lockfile
 
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-RUN npm run build
+RUN pnpm prune --prod
 
 FROM base AS runner
-WORKDIR /app 
+WORKDIR /app
+
+RUN apk add --no-cache aws-cli jq
+
+COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY . ./
+RUN chmod +x ./entrypoint.sh
 
 EXPOSE 3000
 
-CMD ["node", "server.js"]
+CMD ["./entrypoint.sh"]
