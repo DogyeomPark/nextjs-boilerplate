@@ -4,6 +4,30 @@ boilerplate 내부의 component 및 page 등은 이해를 돕기 위한 코드�
 
 필요가 없거나 수정이 필요한 경우, 삭제 및 수정하셔도 무방합니다.
 
+## 환경변수 및 Config 가이드라인
+
+### Public value의 환경 변수 및 config
+
+보안에 영향을 주지 않는 값들은 `.env.***` 파일에 의해 관리됩니다.
+
+- Local : `.env.local`
+- Development : `.env.development`
+- Production : `.env.production`
+
+`.env.local`을 제외한 파일들은 `.gitignore`에 추가하지 않고, 저장소에 포함됩니다.
+
+### Secret value의 환경 변수 및 config
+
+- Local
+
+  선호에 따라 환경변수 주입 (`.env.local`, `export`, `direnv`)
+
+- Development 및 Production
+
+  1. DevOps 팀에 AWS Secrets manager애 환경 변수 생성 요청
+  2. DevOps 팀의 IRSA 및 기타 설정에 대한 MR 대기
+  3. MR 완료 후 배포 확인
+
 ## Swagger Export Typescript
 
 ### `api-service.ts` 생성
@@ -20,7 +44,7 @@ SWAGGER_URL=${swagger_url}
 Swagger에 맞게 typescript를 export 합니다
 
 ```
-pnpm run generate-api
+pnpm run local:generate-api
 ```
 
 `src/generated/api` 폴더 내부에 api 관련 로직이 포함된 `api-service.ts` 파일이 생성됩니다.
