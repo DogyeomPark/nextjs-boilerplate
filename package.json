@@ -8,8 +8,7 @@
     "start": "next start",
     "format": "npx prettier --write \"src/**/*.{ts,tsx}\"",
     "lint": "next lint",
-    "local:generate-api": "dotenv -e .env.local -- bash -c  'swagger-typescript-api --extract-request-params -p $SWAGGER_URL --module-name-index 0 -o src/generated/api -n api-service'",
-    "generate-api": "swagger-typescript-api --extract-request-params -p $SWAGGER_URL --module-name-index 0 -o src/generated/api -n api-service"
+    "generate-api": "dotenv -e .env.local -- bash -c  'swagger-typescript-api --extract-request-params -p $SWAGGER_URL --module-name-index 0 -o src/api -n api-service'"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
