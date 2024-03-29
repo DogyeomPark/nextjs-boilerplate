@@ -23,6 +23,5 @@ fi
 secret=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --query SecretString --output text)
 eval "$(echo "$secret" | jq -r 'to_entries | .[] | "export \(.key)=\(.value)"')"
 
-pnpm generate-api
 pnpm build
 exec pnpm start
