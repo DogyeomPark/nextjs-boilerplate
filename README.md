@@ -44,7 +44,7 @@ SWAGGER_URL=${swagger_url}
 Swagger에 맞게 typescript를 export 합니다
 
 ```
-pnpm run local:generate-api
+pnpm run generate-api
 ```
 
 `src/generated/api` 폴더 내부에 api 관련 로직이 포함된 `api-service.ts` 파일이 생성됩니다.
