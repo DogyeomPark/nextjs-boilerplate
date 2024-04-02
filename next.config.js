@@ -9,9 +9,6 @@ const nextConfig = {
     config.resolve.alias['@'] = path.join(__dirname, './src');
     return config;
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 module.exports = nextConfig;
