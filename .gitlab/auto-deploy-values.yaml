@@ -32,12 +32,12 @@ resources:
     memory: 512Mi
 
 livenessProbe:
-  initialDelaySeconds: 100
+  initialDelaySeconds: 30
   timeoutSeconds: 3
   path: /
 
 readinessProbe:
-  initialDelaySeconds: 100
+  initialDelaySeconds: 30
   timeoutSeconds: 3
   path: /
 

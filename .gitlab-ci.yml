@@ -5,7 +5,10 @@ variables:
 build:
   stage: build
   rules:
-    - if: $CI_COMMIT_REF_NAME != "master"
+    - if: $CI_COMMIT_REF_NAME != "main"
+      variables:
+        AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: "--build-arg=BUILD_ENV=development"
+    - if: $CI_COMMIT_REF_NAME == "main"
       variables:
         AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: ""
 
@@ -35,7 +38,6 @@ workflow:
     - if: $CI_COMMIT_REF_NAME != "development"
       when: never
 
-
 sonarqube-check:
   image:
     name: sonarsource/sonar-scanner-cli:latest
@@ -52,7 +54,6 @@ sonarqube-check:
   allow_failure: true
   rules:
     - if: $CI_COMMIT_BRANCH == 'development'
-
 
 # Custom Auto Devops Enabled
 include:
