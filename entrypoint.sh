@@ -20,8 +20,8 @@ else
 fi
 
 # AWS Secret Manager에서 secret value 호출
-secret=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --query SecretString --output text)
-eval "$(echo "$secret" | jq -r 'to_entries | .[] | "export \(.key)=\(.value)"')"
+#secret=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --query SecretString --output text)
+#eval "$(echo "$secret" | jq -r 'to_entries | .[] | "export \(.key)=\(.value)"')"
 
 pnpm build
 exec pnpm start

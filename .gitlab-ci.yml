@@ -5,22 +5,38 @@ variables:
 build:
   stage: build
   rules:
-    - if: $CI_COMMIT_REF_NAME != "master"
+    - if: $CI_COMMIT_REF_NAME != "main"
+      variables:
+        AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: "--build-arg=BUILD_ENV=development"
+    - if: $CI_COMMIT_REF_NAME == "main"
       variables:
         AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: ""
 
 # 브랜치별 cluster agent 분기 처리
 workflow:
   rules:
+    # production
+    - if: $CI_COMMIT_REF_NAME == "main"
+      variables :
+        KUBE_CONTEXT: "memecore1/cloud/gitlab-kubernetes-agents:eks-dev"
+        KUBE_INGRESS_BASE_DOMAIN: memecore.org
+        HELM_UPGRADE_VALUES_FILE: .gitlab/auto-deploy-values.yaml
+        KUBE_NAMESPACE: $CI_PROJECT_NAME-production
+    # development
     - if: $CI_COMMIT_REF_NAME == "development"
       variables :
         KUBE_CONTEXT: "memecore1/cloud/gitlab-kubernetes-agents:eks-dev"
         KUBE_INGRESS_BASE_DOMAIN: dev.memecore.org
         HELM_UPGRADE_VALUES_FILE: .gitlab/auto-deploy-values-dev.yaml
-        CI_ENVIRONMENT_SLUG: back
+    # review & test
+    - if: '$CI_COMMIT_REF_NAME != "development" && $CI_COMMIT_REF_NAME != "main"'
+      variables:
+        KUBE_CONTEXT: "memecore1/cloud/gitlab-kubernetes-agents:play"
+        KUBE_INGRESS_BASE_DOMAIN: pcloud.memecore.org
+        HELM_UPGRADE_VALUES_FILE: .gitlab/auto-deploy-values-review.yaml
+    # 보일러플레이트 프로젝트는 development 만 동작하도록 예외처리 (프로젝트에서는 이하 코드 삭제)
     - if: $CI_COMMIT_REF_NAME != "development"
       when: never
-
 
 sonarqube-check:
   image:
@@ -39,10 +55,9 @@ sonarqube-check:
   rules:
     - if: $CI_COMMIT_BRANCH == 'development'
 
-
 # Custom Auto Devops Enabled
 include:
   - project: 'memecore1/cloud/gitlab-base-ci'
     ref: main
-    file: '.gitlab/Bs-Auto-DevOps.gitlab-ci.yml'
+    file: '.gitlab/Meme-Auto-DevOps.gitlab-ci.yml'
 
