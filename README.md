@@ -1,57 +1,57 @@
-## Sample Components
+\*\*## Sample Components
 
-boilerplate 내부의 component 및 page 등은 이해를 돕기 위한 코드입니다.
+The components and pages within the boilerplate are provided for understanding purposes.
 
-필요가 없거나 수정이 필요한 경우, 삭제 및 수정하셔도 무방합니다.
+You are free to delete or modify them if they are unnecessary or require changes.
 
-## 환경변수 및 Config 가이드라인
+## Environment Variables and Config Guidelines
 
-### Public value의 환경 변수 및 config
+### Public Environment Variables and Config
 
-보안에 영향을 주지 않는 값들은 `.env.***` 파일에 의해 관리됩니다.
+Values that do not impact security are managed by `.env.***` files.
 
 - Local : `.env.local`
 - Development : `.env.development`
 - Production : `.env.production`
 
-`.env.local`을 제외한 파일들은 `.gitignore`에 추가하지 않고, 저장소에 포함됩니다.
+Files other than `.env.local` are not added to `.gitignore` and are included in the repository.
 
-### Secret value의 환경 변수 및 config
+### Secret Environment Variables and Config
 
 - Local
 
-  선호에 따라 환경변수 주입 (`.env.local`, `export`, `direnv`)
+  Depending on your preference, inject environment variables (`.env.local`, `export`, `direnv`).
 
-- Development 및 Production
+- Development and Production
 
-  1. DevOps 팀에 AWS Secrets manager애 환경 변수 생성 요청
-  2. DevOps 팀의 IRSA 및 기타 설정에 대한 MR 대기
-  3. MR 완료 후 배포 확인
+  1. Request the DevOps team to create environment variables in AWS Secrets Manager.
+  2. Wait for the MR for IRSA and other settings from the DevOps team.
+  3. After the MR is completed, confirm deployment.
 
 ## Swagger Export Typescript
 
-### `api-service.ts` 생성
+### Creating `api-service.ts`
 
-로컬 서버를 띄운 후, 대상이 될 URL을 획득합니다\
-(swaggerURL 경로에 -yaml 추가가 필요합니다)
+Start the local server and obtain the target URL\
+(It is necessary to add -yaml to the swaggerURL path).
 
-`.env.***`에 swagger url 입력합니다
+Enter the swagger URL in the `.env.***` file.
 
 ```
 SWAGGER_URL=${swagger_url}
 ```
 
-Swagger에 맞게 typescript를 export 합니다
+Export typescript file according to Swagger.
 
 ```
 pnpm run generate-api
 ```
 
-`src/generated/api` 폴더 내부에 api 관련 로직이 포함된 `api-service.ts` 파일이 생성됩니다.
+The `api-service.ts` file containing the API logic will be created inside the `src/generated/api` folder.
 
-### `apiService.ts` 생성
+### Creating `apiService.ts`
 
-위 과정 이후 `src/lib` 폴더 안에 아래의 코드를 포함한 `apiService.ts` 파일을 생성합니다.
+After the above process, create the `apiService.ts` file with the following code inside the `src/lib` folder.
 
 ```ts
 import { Api } from '@/generated/api/api-service';
@@ -61,13 +61,13 @@ export const apiService = new Api({
 });
 ```
 
-모든 api 호출 `apiService.ts` 를 import 한 후 사용하시면 되겠습니다.
+You can use `apiService.ts` for all API calls by importing it.
 
-## Keycloak 설정
+## Keycloak Configuration
 
-Keycloak URL (dev: https://accounts.hqloud.blocksmith.xyz) 에서 렐름 생성<br />
-boilerplate 용 렐름은 dev-keycloak-authentication <br />
-환경변수 값 다음과 같이 세팅
+Create a realm on the Keycloak URL (dev: https://accounts.hqloud.blocksmith.xyz)<br />
+The realm for the boilerplate is dev-keycloak-authentication <br />
+Set environment variable values as follows:
 
 ```
 KEYCLOAK_BASE_URL=https://accounts.hqloud.blocksmith.xyz/realms/{생성 렐름 이름}/protocol/openid-connect/token
@@ -75,13 +75,13 @@ KEYCLOAK_ISSUER=https://accounts.hqloud.blocksmith.xyz/realms/{생성 렐름 이
 KEYCLOAK_CLIENT_ID=Keycloak 콘솔에서 Clients -> Settings -> ClientID
 ```
 
-관련하여 자세한 샘플 코드는 `addon/keycloak` 을 참고바랍니다.
+For detailed sample code, refer to `addon/keycloak`.
 
-## react-i18n 설정
+## react-i18n Configuration
 
-### 번역 파일 생성
+### Creating Translation Files
 
-언어별 번역 정보를 담은 json 파일 생성합니다. (파일명은 예시입니다.)
+Create JSON files containing translation information for each language (the filenames are examples).
 
 ```
 .
@@ -91,35 +91,35 @@ KEYCLOAK_CLIENT_ID=Keycloak 콘솔에서 Clients -> Settings -> ClientID
         │   ├── common.json
         │   ├── landing.json
         │   └── ...
-        └── ko/
+        └── jp/
             ├── common.json
             ├── landing.json
             └── ...
 ```
 
-### config 설정
+### Config Settings
 
 ```js
 // i18n.config.js
 const i18nConfig = {
-  locales: ['en', 'ko', ... ],
+  locales: ['en', 'jp', ... ],
   defaultLocale: 'en',
 };
 
 module.exports = i18nConfig;
 ```
 
-관련하여 자세한 샘플 코드는 `addon/react-i18n` 을 참고바랍니다.
+For detailed sample code, refer to `addon/react-i18n`.
 
 ## Dockerize
 
-빌드
+Build
 
 ```
 docker build .  -t next-docker
 ```
 
-도커 실행
+Run Docker
 
 ```
 docker run -dp 3000:3000 next-docker
@@ -127,9 +127,9 @@ docker run -dp 3000:3000 next-docker
 
 ## SIWE (Sign-In with Ethereum)
 
-[EIP-4361](https://eips.ethereum.org/EIPS/eip-4361)(SIWE)는 사용자 Wallet을 통해 `Nonce`를 포함한 정형화된 메시지에 서명하여 오프체인 서비스로 인증하는 방법입니다.
+[EIP-4361](https://eips.ethereum.org/EIPS/eip-4361)(SIWE)s a method of authentication to an off-chain service by signing a standardized message containing a `Nonce` with the user's Wallet.
 
-### 동작 원리
+### How It Works
 
 ```mermaid
 sequenceDiagram
@@ -138,32 +138,32 @@ sequenceDiagram
 	participant Client
   participant API Server
 
-	User ->> Client: 로그인 요청
-	Client ->> +API Server: Nonce 요청
-	API Server -->> -Client: Nonce 반환
+	User ->> Client: Request login
+	Client ->> +API Server: Request Nonce
+	API Server -->> -Client: Request Nonce
 
-  Client ->> Metamask: Nonce를 포함한 Message 생성
-	Metamask ->> User: Message 서명 요청
-	User -->> Metamask: Message 서명
-	Metamask -->> Client: Signature(서명된 메시지) 생성
+  Client ->> Metamask: Create Message with Nonce
+	Metamask ->> User: Request Message signature
+	User -->> Metamask: Sign Message
+	Metamask -->> Client: Generate Signature
 
-	Client ->> +API Server: Message, Signature를 포함한 인증 요청
-	Note right of API Server: Message와 Signature를 통한 검증
-	API Server -->> -Client: 인증 관련 token 반환
+	Client ->> +API Server: Authentication request with Message and Signature
+	Note right of API Server: Verify with Message and Signature
+	API Server -->> -Client: Return authentication token
 ```
 
-1. 유저가 로그인시 클라이언트는 서버로 서명할 메시지(`Nonce`)에 대한 요청을 보냅니다.
-2. 클라이언트에서는 응답받은 `Nonce` 값을 가공하여 [정형화된 메시지](https://eips.ethereum.org/EIPS/eip-4361#message-format)를 생성합니다.
-3. 유저는 Metamask 등의 wallet application을 통해 개인 키를 사용하여 `메시지`에 서명합니다.
-4. 클라이언트는 `메시지`와 `서명된 메시지(Signature)`를 포함하여 서버로 `sign-in 요청`을 합니다.
-5. 서버는 `메시지`와 `서명된 메시지(Signature)`를 통해 서명의 유효성을 검증합니다.
-6. 확인이 성공하면 서버는 token을 부여합니다
+1. When a user logs in, the client sends a request to the server for the message (`Nonce`) to be signed.
+2. The client processes the received `Nonce` to create a [standardized message](https://eips.ethereum.org/EIPS/eip-4361#message-format).
+3. The user signs the `message` with their private key through a wallet application like Metamask.
+4. The client sends the `message` and the `signed message (Signature)` to the server as a sign-in request.
+5. The server verifies the validity of the signature with the `message` and the `signed message (Signature)`.
+6. Upon successful verification, the server issues a token
 
 ### Dependencies
 
 - Server
 
-  이 작업물의 API는 [wallet login을 위한 boilerplate server](https://gitlab.com/memecore1/boilerplate/nestjs-boilerplate/-/tree/common_wallet-dooyong?ref_type=heads)를 기반으로 하고 있습니다.
+  The API for this work is based on the [boilerplate server for wallet login](https://gitlab.com/memecore1/boilerplate/nestjs-boilerplate/-/tree/common_wallet-dooyong?ref_type=heads).
 
 - Wallet Application - MetaMask
 
@@ -171,7 +171,7 @@ sequenceDiagram
 
   - Verification - [SIWE](https://docs.login.xyz/general-information/siwe-overview)
 
-    SIWE 메시지 생성
+    Generate SIWE message
 
     ```
     pnpm add siwe
@@ -179,7 +179,7 @@ sequenceDiagram
 
   - Wallet Connect - [Rainbowkit](https://www.rainbowkit.com/docs/introduction)
 
-    지갑 연결 및 관리
+    Connect and manage wallet
 
     ```
     pnpm add @rainbow-me/rainbowkit wagmi viem@2.x @tanstack/react-query
@@ -187,17 +187,17 @@ sequenceDiagram
 
   - Global state - [Zustand](https://github.com/pmndrs/zustand)
 
-    유저 authentication에 대한 상태를 관리
+    Manage user authentication state globally.
 
     ```
     pnpm add zustand
     ```
 
-### 세부 사항
+### Details
 
 - Web3 configuration
 
-  `WagmiProvider`의 config 속성을 통해 사용할 네트워크, rpc endpoint 등의 configuration 값을 주입합니다.
+  Inject configuration values such as networks and rpc endpoints through the config property of `WagmiProvider`.
 
   ```ts
   'use client';
@@ -218,11 +218,11 @@ sequenceDiagram
 
   ref : https://wagmi.sh/react/api/createConfig
 
-- 지갑 연결 및 인증
+- Wallet Connection and Authentication
 
-  `@rainbow-me/rainbowkit`을 통해 authentication 관련된 로직을 사용하기 위해 `RainbowKitAuthenticationProvider`가 필요합니다.
+  To use authentication-related logic through `@rainbow-me/rainbowkit`, you need the `RainbowKitAuthenticationProvider`.
 
-  `adapter` 속성을 통해 SIWE 로직을, `status`를 통해 유저 authentication 상태를 주입합니다.
+  Inject SIWE logic through the `adapter` property and user authentication status through `status`.
 
   ```ts
   const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
@@ -246,14 +246,14 @@ sequenceDiagram
 
   $\small{\color{#656565}src/providers/walletProvider.tsx}$
 
-  `adapter`는 `createAuthenticationAdapter`를 통해 생성합니다.
-  `createAuthenticationAdapter`에는 다섯 가지 함수가 정의되야 합니다.
+  Create the `adapter` through `createAuthenticationAdapter`.
+  `createAuthenticationAdapter` should define following five functions.
 
-  - `getNonce` - 서명할 메시지에 포함될 `Nonce`를 생성합니다. 해당 작업물에서는 서버에 해당 값을 요청합니다.
-  - `createMessage` - 정형화된 메시지를 생성합니다.
-  - `getMessageBody` - 정형화된 메시지를 서명할 수 있는 형식으로 parsing 합니다.
-  - `verify` - message와 signature를 통해 유저를 검증합니다. 해당 작업물에서는 서버에 message와 signature를 전달 후 서버에서 검증 과정이 진행됩니다.
-  - `signOut` - sign out과 관련된 로직입니다.
+  - `getNonce` - Generates the `Nonce` to be included in the message. In this boilerplate, the server is requested for this value.
+  - `createMessage` - Creates a standardized message.
+  - `getMessageBody` - Parses the standardized message into a format that can be signed.
+  - `verify` - Verifies the user with the message and signature. In this boilerplate, the server handles the verification process by the message and signature from the client.
+  - `signOut` - Logic related to sign-out.
 
   ```ts
   const authAdapter = createAuthenticationAdapter({
@@ -301,3 +301,4 @@ sequenceDiagram
   ```
 
   $\small{\color{#656565}src/hooks/useSiweAdapter.ts}$
+  \*\*
