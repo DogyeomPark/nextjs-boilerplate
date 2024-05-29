@@ -59,5 +59,5 @@ sonarqube-check:
 include:
   - project: 'memecore1/cloud/gitlab-base-ci'
     ref: main
-    file: '.gitlab/Bs-Auto-DevOps.gitlab-ci.yml'
+    file: '.gitlab/Meme-Auto-DevOps.gitlab-ci.yml'
 

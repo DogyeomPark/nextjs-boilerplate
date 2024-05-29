@@ -25,4 +25,4 @@ extraEnv:
   - name: APP_ENV
     value: development
   - name: SECRET_NAME
-    value: nextjs-boilerplate/development/secrets # 해당 프로젝트에서 사용할 aws secrets manager 의 secret name 값 ( 프로젝트별 달라지는 값을 하드 코딩하지 않고 entrypoint.sh 에서 사용됨 )
+    value:  # 해당 프로젝트에서 사용할 aws secrets manager 의 secret name 값 ( 프로젝트별 달라지는 값을 하드 코딩하지 않고 entrypoint.sh 에서 사용됨 )
