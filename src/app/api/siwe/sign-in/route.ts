@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.error();
   }
 
-  const { accessToken } = resp.data;
+  const { accessToken } = resp.data.data;
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   cookies().set(AUTH_TOKEN_KEY, accessToken, {
