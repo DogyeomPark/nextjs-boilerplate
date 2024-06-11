@@ -1,51 +1,36 @@
 'use client';
 
-import { FC, PropsWithChildren, useEffect } from 'react';
+import { FC, PropsWithChildren } from 'react';
+import { RainbowKitProvider, darkTheme } from '@rainbow-me/rainbowkit';
 import {
-  RainbowKitAuthenticationProvider,
-  RainbowKitProvider,
-  darkTheme,
-} from '@rainbow-me/rainbowkit';
-import { useAccount } from 'wagmi';
-import jwt from 'jsonwebtoken';
-import { getCookie } from 'cookies-next';
+  RainbowKitSiweNextAuthProvider,
+  type GetSiweMessageOptions,
+} from '@rainbow-me/rainbowkit-siwe-next-auth';
 
-import useLoginStatus from '@/hooks/useLoginStatus';
-import useSiweAdapter from '@/hooks/useSiweAdapter';
-
-import { AUTH_TOKEN_KEY, type AuthToken } from '@/config';
+const SIWE_STATEMENT = 'Welcome to MEMECORE Service!';
+const SIWE_VERSION = '1';
 
 const WalletProvider: FC<PropsWithChildren> = ({ children }) => {
-  const { address } = useAccount();
-  const { loginStatus, setLoginStatus } = useLoginStatus();
-  const { authAdapter } = useSiweAdapter();
-
-  useEffect(() => {
-    const accessToken = getCookie(AUTH_TOKEN_KEY);
-    if (!accessToken) {
-      setLoginStatus('unauthenticated');
-      return;
-    }
-
-    const decodedJwt = jwt.decode(accessToken) as AuthToken;
-
-    if (decodedJwt?.walletAddress && decodedJwt.walletAddress === address) {
-      setLoginStatus('authenticated');
-      return;
-    }
-
-    setLoginStatus('unauthenticated');
-  }, [address, loginStatus, setLoginStatus]);
-
+  const getSiweMessageOptions: GetSiweMessageOptions = () => {
+    return {
+      domain: window.location.host,
+      statement: SIWE_STATEMENT,
+      uri: window.location.origin,
+      version: SIWE_VERSION,
+    };
+  };
   return (
-    <RainbowKitAuthenticationProvider
-      adapter={authAdapter}
-      status={loginStatus}
+    <RainbowKitSiweNextAuthProvider
+      getSiweMessageOptions={getSiweMessageOptions}
     >
-      <RainbowKitProvider theme={darkTheme()} modalSize='compact'>
+      <RainbowKitProvider
+        locale='en'
+        theme={darkTheme({ borderRadius: 'none' })}
+        modalSize='compact'
+      >
         {children}
       </RainbowKitProvider>
-    </RainbowKitAuthenticationProvider>
+    </RainbowKitSiweNextAuthProvider>
   );
 };
 

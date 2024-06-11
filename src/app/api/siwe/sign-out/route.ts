@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 
+import { auth } from '@/auth';
 import { apiService } from '@/lib/apiService';
-import { AUTH_TOKEN_KEY } from '@/config';
 
 export async function POST(request: NextRequest) {
+  const session = await auth();
+
   await apiService.user.userControllerSignOut({
-    headers: { Cookie: cookies().toString() },
+    headers: { Authorization: `Bearer ${session?.accessToken}` },
   });
-  cookies().delete(AUTH_TOKEN_KEY);
+
   return NextResponse.json({}, { status: 200 });
 }

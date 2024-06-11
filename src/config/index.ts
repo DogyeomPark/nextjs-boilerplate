@@ -1,2 +1,2 @@
 export * from '@/config/wagmiConfig';
-export * from '@/config/auth';
+export * from '@/config/auth.config';
