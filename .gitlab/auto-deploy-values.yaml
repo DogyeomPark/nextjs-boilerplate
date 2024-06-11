@@ -7,13 +7,37 @@ ingress:
     kubernetes.io/ingress.class: istio
     kubernetes.io/tls-acme: "true"
 
+replicaCount: 2
+hpa:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  # See https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/
+  # for examples of each.
+  targetCPUUtilizationPercentage: 80
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+resources:
+  #  limits:
+  #    cpu: 100m
+  #    memory: 128Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
 livenessProbe:
-  initialDelaySeconds: 100
+  initialDelaySeconds: 30
   timeoutSeconds: 3
   path: /
 
 readinessProbe:
-  initialDelaySeconds: 100
+  initialDelaySeconds: 30
   timeoutSeconds: 3
   path: /
 

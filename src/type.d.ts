@@ -1,34 +1,21 @@
-import { User } from 'next-auth';
+import { DefaultSession } from 'next-auth';
 
-type UserId = string;
 declare module 'next-auth/jwt' {
   interface JWT {
-    sub: UserId;
-    iat: number;
-    exp: number;
-    jti: string;
-    name: string;
-    accessToken: string;
-    refreshToken: string;
-    accessTokenExpiredAt: number;
-    refreshTokenExpiredAt: number;
-    provider: string;
-    idToken: string;
+    accessToken: string | null;
+    refreshToken: string | null;
+    accessTokenExpiredAt: number | null;
+    refreshTokenExpiredAt: number | null;
   }
 }
 
 declare module 'next-auth' {
-  interface Session {
-    user: User & {
-      sub: UserId;
-      iat: number;
-      exp: number;
-      jti: string;
-      name: string;
-      accessToken: string;
-      refreshToken: string;
-      accessTokenExpiredAt: number;
-      refreshTokenExpiredAt: number;
-    };
+  interface User {
+    accessToken: string;
+    refreshToken: string;
+    accessTokenExpiredAt: number | null;
+    refreshTokenExpiredAt: number | null;
   }
+
+  interface Session extends DefaultSession, User {}
 }

@@ -1,30 +1,39 @@
 'use client';
 
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
+import useConnectWallet from '@/hooks/useConnectWallet';
 
 import '@rainbow-me/rainbowkit/styles.css';
 
 const WalletConnectButton: FC = () => {
+  const router = useRouter();
+  const { data: user } = useSession();
+  const { openConnectModal, disconnectAsync, isConnected, openAccountModal } =
+    useConnectWallet();
+
+  const onClickConnect = async () => {
+    await disconnectAsync();
+    openConnectModal?.();
+  };
+
+  useEffect(() => {
+    router.refresh();
+  }, [isConnected]);
+
   return (
     <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        authenticationStatus,
-        mounted,
-      }) => {
-        // Note: If your app doesn't use authentication, you
-        // can remove all 'authenticationStatus' checks
+      {({ account, chain, authenticationStatus, mounted, openChainModal }) => {
         const ready = mounted && authenticationStatus !== 'loading';
         const connected =
           ready &&
           account &&
           chain &&
-          (!authenticationStatus || authenticationStatus === 'authenticated');
+          (!authenticationStatus || authenticationStatus === 'authenticated') &&
+          user?.id;
 
         return (
           <div
@@ -40,7 +49,7 @@ const WalletConnectButton: FC = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={openConnectModal} type='button'>
+                  <button onClick={onClickConnect} type='button'>
                     Sign in
                   </button>
                 );
