@@ -9,12 +9,6 @@
  * ---------------------------------------------------------------
  */
 
-export interface GetNonceOutput {
-  data: {
-    nonce: string;
-  };
-}
-
 export interface SignInInput {
   message: {
     domain: string;
@@ -306,21 +300,6 @@ export class Api<
 > extends HttpClient<SecurityDataType> {
   user = {
     /**
-     * @description Generate messages required for SIWE authentication.
-     *
-     * @name UserControllerGetNonce
-     * @summary generate siwe message
-     * @request GET:/user/nonce
-     */
-    userControllerGetNonce: (params: RequestParams = {}) =>
-      this.request<GetNonceOutput, any>({
-        path: `/user/nonce`,
-        method: 'GET',
-        format: 'json',
-        ...params,
-      }),
-
-    /**
      * @description SiweMessage verify -> issue access, refresh token
      *
      * @name UserControllerSignIn
@@ -343,11 +322,13 @@ export class Api<
      * @name UserControllerSignOut
      * @summary sign out
      * @request POST:/user/signout
+     * @secure
      */
     userControllerSignOut: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/user/signout`,
         method: 'POST',
+        secure: true,
         ...params,
       }),
 
@@ -357,11 +338,13 @@ export class Api<
      * @name UserControllerTokenRefesh
      * @summary Reissue token
      * @request GET:/user/refresh
+     * @secure
      */
     userControllerTokenRefesh: (params: RequestParams = {}) =>
       this.request<RefreshOutput, any>({
         path: `/user/refresh`,
         method: 'GET',
+        secure: true,
         format: 'json',
         ...params,
       }),
