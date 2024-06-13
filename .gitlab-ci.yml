@@ -5,10 +5,10 @@ variables:
 build:
   stage: build
   rules:
-    - if: $CI_COMMIT_REF_NAME != "main"
+    - if: '$CI_COMMIT_REF_NAME != "main"'
       variables:
         AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: "--build-arg=BUILD_ENV=development"
-    - if: $CI_COMMIT_REF_NAME == "main"
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_REF_NAME != "release/main"'
       variables:
         AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: ""
 
@@ -17,11 +17,11 @@ workflow:
   rules:
     # production
     - if: $CI_COMMIT_REF_NAME == "main"
-      variables :
-        KUBE_CONTEXT: "memecore1/cloud/gitlab-kubernetes-agents:eks-dev"
+      variables:
+        KUBE_CONTEXT: "memecore1/cloud/gitlab-kubernetes-agents:eks-main"
         KUBE_INGRESS_BASE_DOMAIN: memecore.org
         HELM_UPGRADE_VALUES_FILE: .gitlab/auto-deploy-values.yaml
-        KUBE_NAMESPACE: $CI_PROJECT_NAME-production
+        KUBE_NAMESPACE: $CI_PROJECT_NAME
     # development
     - if: $CI_COMMIT_REF_NAME == "development"
       variables :

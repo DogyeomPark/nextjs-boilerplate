@@ -51,3 +51,6 @@ extraEnv:
   - name: SECRET_NAME
     value:  # 해당 프로젝트에서 사용할 aws secrets manager 의 secret name 값 ( 프로젝트별 달라지는 값을 하드 코딩하지 않고 entrypoint.sh 에서 사용됨 )
 
+# 클러스터 구성을 관리형 노드그룹(manage-group)과 서비스 노드그룹(service-group) 을 분리하였으므로, 해당 tag를 통해 서비스용 노드그룹에 배치 될 수 있게 합니다.
+nodeSelector:
+  alpha.eksctl.io/nodegroup-name: service-group
