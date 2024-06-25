@@ -77,7 +77,7 @@ const refreshAccessToken = async (token: JWT): Promise<JWT | null> => {
 
     const resp = await apiService.user.userControllerTokenRefesh({
       headers: {
-        Authorization: `Bearer ${token?.accessToken}`,
+        Authorization: `Bearer ${token?.refreshToken}`,
       },
     });
 

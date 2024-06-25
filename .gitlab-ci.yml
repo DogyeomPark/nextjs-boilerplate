@@ -12,7 +12,7 @@ build:
       variables:
         AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS: ""
 
-# 브랜치별 cluster agent 분기 처리
+# cluster agent
 workflow:
   rules:
     # production
@@ -34,7 +34,7 @@ workflow:
         KUBE_CONTEXT: "memecore1/cloud/gitlab-kubernetes-agents:play"
         KUBE_INGRESS_BASE_DOMAIN: pcloud.memecore.org
         HELM_UPGRADE_VALUES_FILE: .gitlab/auto-deploy-values-review.yaml
-    # 보일러플레이트 프로젝트는 development 만 동작하도록 예외처리 (프로젝트에서는 이하 코드 삭제)
+    # The boilerplate project is set up to run only in development mode. (Remove the following code in the project).
     - if: $CI_COMMIT_REF_NAME != "development"
       when: never
 
