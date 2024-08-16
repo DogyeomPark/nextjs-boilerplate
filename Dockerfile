@@ -1,20 +1,28 @@
-# 베이스 이미지 설정
-FROM public.ecr.aws/docker/library/node:18-alpine AS base
-WORKDIR /app
+# https://github.com/vercel/next.js/blob/canary/examples/with-docker/Dockerfile
+FROM public.ecr.aws/docker/library/node:20-alpine AS base
 
 ARG BUILD_ENV
 
-# pnpm 설치
-RUN npm install -g pnpm@9.0.5
-
-# 의존성 설치를 위한 스테이지
+# Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache python3 make g++ && ln -sf python3 /usr/bin/python
-COPY package.json pnpm-lock.yaml ./
-RUN pnpm install --frozen-lockfile --store-dir .pnpm-store
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
 
-# 빌드 스테이지
-FROM deps AS builder
+
+# Install dependencies based on the preferred package manager
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+#COPY patches/ ./patches/
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+
+# Rebuild the source code only when needed
+FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -26,29 +34,49 @@ RUN if [ -n "$BUILD_ENV" ]; then \
 
 RUN echo "$BUILD_ENV"
 
-# 개발 의존성 제거
-RUN pnpm run build
-RUN pnpm prune --prod
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+ENV NEXT_TELEMETRY_DISABLED 1
 
-# 최종 이미지
-FROM base AS deploy
+RUN \
+  if [ -f yarn.lock ]; then yarn run build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+# Production image, copy all the files and run next
+FROM base AS runner
 WORKDIR /app
 
-# Secret Manager 사용 시
-#RUN apk add --no-cache aws-cli jq
+RUN apk add --no-cache libc6-compat jq aws-cli
 
-# 프로덕션 의존성 복사
-COPY --from=builder /app/node_modules ./node_modules
-# package.json 복사 (환경변수 등 설정 포함)
-COPY --from=builder /app/package.json ./package.json
-# 빌드된 .next 디렉토리 복사
-COPY --from=builder /app/.next ./.next
-# 기타
-COPY --from=builder /app/.env.* ./
-COPY --from=builder /app/entrypoint.sh ./
+ENV NODE_ENV production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+ENV NEXT_TELEMETRY_DISABLED 1
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
 
 COPY --from=builder /app/public ./public
 
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+COPY --from=builder /app/entrypoint.sh ./
+COPY --from=builder /app/.env.* ./
+
+USER nextjs
+
 EXPOSE 3000
+
+ENV PORT=3000
 
 CMD ["./entrypoint.sh"]
