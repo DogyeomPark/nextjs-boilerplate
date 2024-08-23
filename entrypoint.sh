@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 
-# APP_ENV가 정의되지 않은 경우 종료
+# Store runtime environment variable temporarily
 if [ -z "${APP_ENV}" ]; then
   echo "ERROR: APP_ENV is not defined. Exiting..."
   exit 1
 fi
 
-# APP_ENV에 따라 .env 파일 로드, 해당 파일이 없을 경우 종료
+# Load .env files according to APP_ENV,  shut down if they do not exist
 if [ -f .env.${APP_ENV} ]; then
   while IFS= read -r line || [[ -n "$line" ]]; do
     if [[ "$line" == "" || "$line" == \#* ]]; then
@@ -23,6 +23,8 @@ fi
 #secret=$(aws secretsmanager get-secret-value --secret-id $SECRET_NAME --query SecretString --output text)
 #eval "$(echo "$secret" | jq -r 'to_entries | .[] | "export \(.key)=\(.value)"')"
 
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
+HOSTNAME="0.0.0.0"
 
-pnpm build
-exec pnpm start
+exec node server.js
