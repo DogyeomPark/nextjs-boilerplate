@@ -1,7 +1,13 @@
-import WalletConnectButton from '@/components/walletConnectButton';
+import axios from "axios"
+import TodosPage from "./todos/page";
 
-const Home: React.FC = () => {
-  return <WalletConnectButton />;
-};
+export default function HomePage(){
+  return (
+    <div>
+      <h1>Home Page</h1>
+      <TodosPage />
+    </div>
+  );
+}
 
-export default Home;
+

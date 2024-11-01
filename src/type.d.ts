@@ -1,5 +1,11 @@
 import { DefaultSession } from 'next-auth';
 
+export interface Todo {
+  id: number;
+  value: string;
+  done: boolean;
+}
+
 declare module 'next-auth/jwt' {
   interface JWT {
     accessToken: string | null;
